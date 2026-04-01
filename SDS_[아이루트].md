@@ -2162,6 +2162,190 @@ GPS 위치 갱신 정보는 5초 주기로 반영되는 것을 목표로 한다.
   ## 3. Class diagram
 
 ### AI
+```mermaid
+classDiagram
+    direction LR
+
+    %% =========================
+    %% Entity Layer
+    %% =========================
+    class StudentEntity {
+        <<entity>>
+        - Long studentId
+        - String name
+        - StudyTendency learningTendency
+        - Integer currentLevel
+    }
+
+    class GradeEntity {
+        <<entity>>
+        - Long gradeId
+        - Long studentId
+        - Long subjectId
+        - Integer score
+        - LocalDate testDate
+        - Double percentile
+        + void updateScore(Integer score)
+    }
+
+    class StudyLogEntity {
+        <<entity>>
+        - Long logId
+        - Long studentId
+        - Long subjectId
+        - Integer durationMinutes
+        - LocalDateTime startTime
+        - LocalDateTime endTime
+    }
+
+    class WrongAnswerEntity {
+        <<entity>>
+        - Long wrongAnswerId
+        - Long studentId
+        - Long questionId
+        - Integer failCount
+        - LocalDate lastFailedDate
+    }
+
+    class TargetGoalEntity {
+        <<entity>>
+        - Long goalId
+        - Long studentId
+        - String targetKeyword
+        - LocalDate targetDate
+        - Integer dailyStudyHours
+    }
+
+    %% =========================
+    %% DTO Layer
+    %% =========================
+    class MaterialRecommendationDto {
+        - Long materialId
+        - String title
+        - String materialType
+        - String matchReason
+    }
+
+    class AnalysisReportDto {
+        - String subjectName
+        - Double myPercentile
+        - Double averageScore
+        - String weakPointSummary
+    }
+
+    class ReviewPaperDto {
+        - Long paperId
+        - List questions
+        - List weakConcepts
+    }
+
+    class PredictedScoreDto {
+        - Integer expectedScoreMin
+        - Integer expectedScoreMax
+        - Double achievementProbability
+    }
+
+    %% =========================
+    %% Repository Layer
+    %% =========================
+    class GradeRepository {
+        <<interface>>
+        + List findByStudentIdOrderByTestDateAsc(Long studentId)
+        + GradeEntity save(GradeEntity grade)
+    }
+
+    class WrongAnswerRepository {
+        <<interface>>
+        + List findByStudentIdOrderByFailCountDesc(Long studentId)
+    }
+
+    class TargetGoalRepository {
+        <<interface>>
+        + Optional findByStudentId(Long studentId)
+    }
+
+    %% =========================
+    %% Service Layer
+    %% =========================
+    class AiRecommendationService {
+        - StudentRepository studentRepository
+        - GradeRepository gradeRepository
+        - StudyMaterialRepository materialRepository
+        + List recommendMaterials(Long studentId)
+        + StudyMethodDto suggestStudyMethod(Long studentId, Long subjectId)
+        + StudyRoadmapDto recommendGoalRoadmap(Long studentId)
+        + List recommendDailyReview(Long studentId)
+    }
+
+    class ReportAnalysisService {
+        - GradeRepository gradeRepository
+        - StudyLogRepository studyLogRepository
+        + AnalysisReportDto generateScoreReport(Long studentId, Long testId)
+        + StudyPatternDto analyzeStudyPattern(Long studentId)
+        + StrengthAnalysisDto analyzeStrengths(Long studentId)
+    }
+
+    class ReviewGenerationService {
+        - WrongAnswerRepository wrongAnswerRepository
+        - QuestionRepository questionRepository
+        + ReviewPaperDto generateCustomReviewPaper(Long studentId)
+    }
+
+    class PredictionService {
+        - GradeRepository gradeRepository
+        - StudyLogRepository studyLogRepository
+        + PredictedScoreDto predictNextScore(Long studentId, Long subjectId)
+    }
+
+    %% =========================
+    %% Controller Layer
+    %% =========================
+    class RecommendationController {
+        - AiRecommendationService aiRecommendationService
+        + ResponseEntity getMaterialRecommendations(Long studentId)
+        + ResponseEntity getGoalRoadmap(Long studentId)
+        + ResponseEntity getDailyReviewTasks(Long studentId)
+    }
+
+    class AnalysisReportController {
+        - ReportAnalysisService reportAnalysisService
+        + ResponseEntity getScoreReport(Long studentId, Long testId)
+        + ResponseEntity getStudyPattern(Long studentId)
+        + ResponseEntity getStrengthAnalysis(Long studentId)
+    }
+
+    class StudyPlanController {
+        - StudyPlanningService studyPlanningService
+        - ReviewGenerationService reviewGenerationService
+        + ResponseEntity generateReviewPaper(Long studentId)
+        + ResponseEntity designProgressPlan(Long studentId, TargetGoalDto goalDto)
+    }
+
+    %% =========================
+    %% Relationships
+    %% =========================
+    StudentEntity "1" --* "0..*" GradeEntity : owns
+    StudentEntity "1" --* "0..*" StudyLogEntity : generates
+    StudentEntity "1" --* "0..*" WrongAnswerEntity : records
+    StudentEntity "1" --* "0..1" TargetGoalEntity : sets
+
+    GradeRepository ..> GradeEntity : manages
+    WrongAnswerRepository ..> WrongAnswerEntity : manages
+    TargetGoalRepository ..> TargetGoalEntity : manages
+
+    AiRecommendationService --> GradeRepository : uses
+    AiRecommendationService ..> MaterialRecommendationDto : returns
+    ReportAnalysisService --> GradeRepository : uses
+    ReportAnalysisService ..> AnalysisReportDto : returns
+    ReviewGenerationService --> WrongAnswerRepository : uses
+    ReviewGenerationService ..> ReviewPaperDto : returns
+    PredictionService --> GradeRepository : uses
+    PredictionService ..> PredictedScoreDto : returns
+
+    RecommendationController --> AiRecommendationService : calls
+    AnalysisReportController --> ReportAnalysisService : calls
+    StudyPlanController --> ReviewGenerationService : calls
+```
 
 #### Entity Class
 
