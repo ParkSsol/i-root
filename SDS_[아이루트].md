@@ -2932,6 +2932,7 @@ classDiagram
 | Method	          | generateReviewPaper(Long studentId)|	ResponseEntity  |	취약 개념 기반의 맞춤형 가상 문제지 응답|	       | |
 | Method	          | designProgressPlan(Long studentId, TargetGoalDto goalDto)|	ResponseEntity|	목표일에 맞춘 일일 최적 학습 분량 분배 응답 |         |
 
+```mermaid
 graph TD
     Start([시작]) --> UserType{사용자 구분}
 
@@ -2967,6 +2968,7 @@ graph TD
     GoalTrend --> End
     ReviewCycle --> End
 
+```
 
 ### GPS
 ```mermaid
