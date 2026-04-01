@@ -2932,6 +2932,41 @@ classDiagram
 | Method	          | generateReviewPaper(Long studentId)|	ResponseEntity  |	취약 개념 기반의 맞춤형 가상 문제지 응답|	       | |
 | Method	          | designProgressPlan(Long studentId, TargetGoalDto goalDto)|	ResponseEntity|	목표일에 맞춘 일일 최적 학습 분량 분배 응답 |         |
 
+graph TD
+    Start([시작]) --> UserType{사용자 구분}
+
+    UserType -->|학생| StudentGrade[학생 성적 입력]
+    UserType -->|학생| StudentEval[학생 자기 평가 입력]
+    UserType -->|강사| TeacherFeedback[강사 피드백 입력]
+
+    StudentGrade --> TrendGraph[성적 그래프 추이]
+    StudentGrade --> AnalysisReport[성적 분석 리포트]
+    StudentGrade --> SummaryReport[요약 리포트]
+
+    TrendGraph --> PatternAnalysis[학습 패턴 분석]
+    AnalysisReport --> PatternAnalysis
+    SummaryReport --> PatternAnalysis
+    StudentEval --> PatternAnalysis
+    TeacherFeedback --> PatternAnalysis
+
+    PatternAnalysis --> WeaknessAnalysis[자주 틀리는 문제 분석 및 복습 문제 생성]
+    PatternAnalysis --> GrowthPrediction[성장 예측]
+    PatternAnalysis --> StrengthAnalysis[강점 영역 분석]
+
+    WeaknessAnalysis --> CustomRecommendation[맞춤 학습 자료 추천]
+    GrowthPrediction --> CustomRecommendation
+    StrengthAnalysis --> CustomRecommendation
+
+    CustomRecommendation --> CustomPace[학생 맞춤 학습 진도 설계]
+    CustomRecommendation --> StudyMethod[학생 맞춤 과목별 공부 방식 제안]
+    CustomRecommendation --> GoalTrend[목표 기반 학습 추이]
+    CustomRecommendation --> ReviewCycle[복습 주기 및 복습 내용 추천]
+
+    CustomPace --> End([종료])
+    StudyMethod --> End
+    GoalTrend --> End
+    ReviewCycle --> End
+
 
 ### GPS
 ```mermaid
