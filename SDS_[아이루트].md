@@ -255,15 +255,15 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   Guest
 - **Preconditions**
-  i. 사용자는 소셜 로그인 제공자의 계정을 보유하고 있어야 한다.
-  ii. 인터넷 연결이 가능해야 한다.
-  iii. 소셜 인증 서비스가 정상적으로 동작해야 한다.
+  1. 사용자는 소셜 로그인 제공자의 계정을 보유하고 있어야 한다.
+  2. 인터넷 연결이 가능해야 한다.
+  3. 소셜 인증 서비스가 정상적으로 동작해야 한다.
 - **Trigger**
   사용자가 로그인 화면에서 “소셜 로그인” 버튼을 클릭한 경우
 - **Success Post Condition**
-  i. 사용자가 소셜 인증에 성공한다.
-  ii. 아이루트 시스템은 사용자 계정을 확인하고 로그인을 완료한다.
-  iii. 신규 사용자일 경우 추가 정보 입력 또는 사용자 유형 선택 화면으로 이동할 수 있다.
+  1. 사용자가 소셜 인증에 성공한다.
+  2. 아이루트 시스템은 사용자 계정을 확인하고 로그인을 완료한다.
+  3. 신규 사용자일 경우 추가 정보 입력 또는 사용자 유형 선택 화면으로 이동할 수 있다.
 - **Failed Post Condition**
   소셜 인증이 실패하거나 중단되면 로그인은 완료되지 않는다.
 #### MAIN SUCCESS SCENARIO
@@ -312,18 +312,18 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   Guest
 - **Preconditions**
-  i. 아이루트 시스템에 계정이 존재해야 한다.
-  ii. 인터넷 연결이 가능해야 한다.
-  iii. 사용자는 로그인에 필요한 아이디와 비밀번호를 알고 있어야 한다.
+  1. 아이루트 시스템에 계정이 존재해야 한다.
+  2. 인터넷 연결이 가능해야 한다.
+  3. 사용자는 로그인에 필요한 아이디와 비밀번호를 알고 있어야 한다.
 - **Trigger**
   사용자가 로그인 화면에서 아이디와 비밀번호를 입력하고 로그인 버튼을 누른 경우
 - **Success Post Condition**
-  i. 사용자가 정상적으로 인증된다.
-  ii. 인증 토큰이 발급된다.
-  iii. 사용자는 자신의 역할에 맞는 메인 화면으로 이동한다.
+  1. 사용자가 정상적으로 인증된다.
+  2. 인증 토큰이 발급된다.
+  3. 사용자는 자신의 역할에 맞는 메인 화면으로 이동한다.
 - **Failed Post Condition**
-  i. 아이디 또는 비밀번호가 잘못된 경우 로그인은 실패한다.
-  ii. 반복적인 로그인 실패 시 일정 시간 로그인 시도가 제한될 수 있다.
+  1. 아이디 또는 비밀번호가 잘못된 경우 로그인은 실패한다.
+  2. 반복적인 로그인 실패 시 일정 시간 로그인 시도가 제한될 수 있다.
 #### MAIN SUCCESS SCENARIO
 | Step | Action                                               |
 | ---- | --------------------------------------------------------- |
@@ -368,13 +368,13 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   Guest
 - **Preconditions**
-  i. 사용자는 아이루트 앱 또는 웹에 접근 가능한 상태여야 한다.
-  ii. 인터넷 연결이 가능해야 한다.
+  1. 사용자는 아이루트 앱 또는 웹에 접근 가능한 상태여야 한다.
+  2. 인터넷 연결이 가능해야 한다.
 - **Trigger**
   사용자가 회원가입 버튼을 클릭한 경우
 - **Success Post Condition**
-  i. 사용자의 계정이 정상적으로 생성된다.
-  ii. 사용자는 이후 로그인할 수 있다.
+  1. 사용자의 계정이 정상적으로 생성된다.
+  2. 사용자는 이후 로그인할 수 있다.
 - **Failed Post Condition**
   필수 정보가 누락되거나 중복 또는 유효하지 않은 경우 회원가입은 완료되지 않는다.
 #### MAIN SUCCESS SCENARIO
@@ -423,8 +423,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 프로필 정보가 시스템에 저장되어 있어야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 프로필 정보가 시스템에 저장되어 있어야 한다.
 - **Trigger**
   사용자가 마이페이지 또는 내 프로필 메뉴에 접근한 경우
 - **Success Post Condition**
@@ -470,8 +470,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 프로필 정보가 시스템에 저장되어 있어야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 프로필 정보가 시스템에 저장되어 있어야 한다.
 - **Trigger**
   사용자가 내 프로필 수정 화면에 접근한 경우
 - **Success Post Condition**
@@ -522,13 +522,13 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 탈퇴 가능한 계정 상태여야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 탈퇴 가능한 계정 상태여야 한다.
 - **Trigger**
   탈퇴 가능한 계정 상태여야 한다.
 - **Success Post Condition**
-  i. 계정이 소프트 삭제 상태로 변경된다.
-  ii. 사용자는 이후 일반적인 방식으로 로그인할 수 없다.
+  1. 계정이 소프트 삭제 상태로 변경된다.
+  2. 사용자는 이후 일반적인 방식으로 로그인할 수 없다.
 - **Failed Post Condition**
   시스템 오류가 발생하면 탈퇴 처리가 완료되지 않는다.
 #### MAIN SUCCESS SCENARIO
@@ -574,13 +574,13 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 유효한 인증 토큰이 존재해야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 유효한 인증 토큰이 존재해야 한다.
 - **Trigger**
   사용자가 로그아웃 버튼을 클릭한 경우
 - **Success Post Condition**
-  i. 현재 인증 토큰이 무효화되거나 삭제된다.
-  ii. 사용자는 비로그인 상태로 전환된다.
+  1. 현재 인증 토큰이 무효화되거나 삭제된다.
+  2. 사용자는 비로그인 상태로 전환된다.
 - **Failed Post Condition**
   로그아웃 처리 실패 시 사용자가 로그인 상태로 남아 있을 수 있다.
 #### MAIN SUCCESS SCENARIO
@@ -623,13 +623,13 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator), System(시스템)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 유효한 리프레시 토큰이 존재해야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 유효한 리프레시 토큰이 존재해야 한다.
 - **Trigger**
   액세스 토큰이 만료되었거나 재발급 요청이 발생한 경우
 - **Success Post Condition**
-  i. 새로운 액세스 토큰이 발급된다.
-  ii. 사용자는 재로그인 없이 서비스를 계속 이용할 수 있다.
+  1. 새로운 액세스 토큰이 발급된다.
+  2. 사용자는 재로그인 없이 서비스를 계속 이용할 수 있다.
 - **Failed Post Condition**
   리프레시 토큰이 유효하지 않으면 토큰 재발급에 실패하고 재로그인이 필요하다.
 #### MAIN SUCCESS SCENARIO
@@ -674,13 +674,13 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator)
 - **Preconditions**
-  i. 사용자는 로그인된 상태여야 한다.
-  ii. 일반 로그인 계정을 사용 중이어야 한다.
+  1. 사용자는 로그인된 상태여야 한다.
+  2. 일반 로그인 계정을 사용 중이어야 한다.
 - **Trigger**
   사용자가 비밀번호 변경 메뉴에 접근한 경우
 - **Success Post Condition**
-  i. 비밀번호가 새로운 값으로 저장된다.
-  ii. 이후 새 비밀번호로 로그인할 수 있다.
+  1. 비밀번호가 새로운 값으로 저장된다.
+  2. 이후 새 비밀번호로 로그인할 수 있다.
 - **Failed Post Condition**
   현재 비밀번호가 일치하지 않거나 새 비밀번호가 정책에 맞지 않으면 변경되지 않는다.
 #### MAIN SUCCESS SCENARIO
@@ -727,8 +727,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모(Parent User), 학원(Instructor), 관리자(Administrator)
 - **Preconditions**
-  i. 사용자는 가입된 계정을 가지고 있어야 한다.
-  ii. 이메일 또는 전화번호 인증이 가능한 상태여야 한다.
+  1. 사용자는 가입된 계정을 가지고 있어야 한다.
+  2. 이메일 또는 전화번호 인증이 가능한 상태여야 한다.
 - **Trigger**
   사용자가 로그인 화면에서 “비밀번호 찾기” 버튼을 클릭한 경우
 - **Success Post Condition**
@@ -788,8 +788,8 @@ GENERAL CHARACTERISTICS
 - **Trigger**
   사용자가 사용자 유형 선택 화면에 진입한 경우
 - **Success Post Condition**
-  i. 사용자의 유형 정보가 저장된다.
-  ii. 이후 유형에 맞는 기능과 화면이 제공된다.
+  1. 사용자의 유형 정보가 저장된다.
+  2. 이후 유형에 맞는 기능과 화면이 제공된다.
 - **Failed Post Condition**
   유형 선택이 완료되지 않으면 일부 서비스 이용이 제한될 수 있다.
 #### MAIN SUCCESS SCENARIO
@@ -2661,8 +2661,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모 (Parent User), 학원 강사 (Instructor)
 - **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 서버에 게시판 목록 데이터가 존재해야 한다.
+  1. 사용자는 로그인 상태여야 한다.
+  2. 서버에 게시판 목록 데이터가 존재해야 한다.
 - **Trigger**
   사용자가 앱에서 '게시판' 버튼 클릭한다.
 - **Success Post Condition**
@@ -2759,8 +2759,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모 (Parent User), 학원 강사 (Instructor), 관리자 (Administrator)
 - **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 사용자는 해당 게시판/게시글에 대한 수정 권한을 가지고 있어야 한다.
+  1. 사용자는 로그인 상태여야 한다.
+  2. 사용자는 해당 게시판/게시글에 대한 수정 권한을 가지고 있어야 한다.
 - **Trigger**
   사용자가 게시판/게시글 설정 버튼을 클릭한다.
 - **Success Post Condition**
@@ -2809,8 +2809,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모 (Parent User), 학원 강사 (Instructor), 관리자 (Administrator)
 - **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 사용자는 해당 게시판에 대한 삭제 권한을 가지고 있어야 한다.
+  1. 사용자는 로그인 상태여야 한다.
+  2. 사용자는 해당 게시판에 대한 삭제 권한을 가지고 있어야 한다.
 - **Trigger**
   사용자가 게시판 설정 버튼을 클릭한다.
 - **Success Post Condition**
@@ -2859,8 +2859,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모 (Parent User)
 - **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 시스템에 검색 가능한 게시판 데이터가 존재해야 한다.
+  1. 사용자는 로그인 상태여야 한다.
+  2. 시스템에 검색 가능한 게시판 데이터가 존재해야 한다.
 - **Trigger**
   사용자가 검색창에서 태그를 선택하거나 검색어를 입력하고 검색을 수행한다.
 - **Success Post Condition**
@@ -2956,8 +2956,8 @@ GENERAL CHARACTERISTICS
 - **Primary Actor**
   학부모 (Parent User)
 - **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 서버에 게시판에 일치한 게시글 목록 데이터가 존재해야 한다.
+  1. 사용자는 로그인 상태여야 한다.
+  2. 서버에 게시판에 일치한 게시글 목록 데이터가 존재해야 한다.
 - **Trigger**
   사용자가 특정 게시판을 클릭한다.
 - **Success Post Condition**
@@ -3081,54 +3081,6 @@ GENERAL CHARACTERISTICS
 - **Due Date**:
   2026.03.31
 
-### **Use case #53 : 다이렉트 메시지
-GENERAL CHARACTERISTICS
-- **Summary**  
-  다른 사용자에게 직접 메시지를 보낼 수 있다.
-- **Scope**
-  아이루트
-- **Level**   
-  User level
-- **Author**   
-  정석희
-- **Last Update**
-  2026.03.31
-- **Status**
-  Design
-- **Primary Actor**
-  학부모 (Parent User), 학원 강사(Instructor)
-- **Preconditions**
-  i. 사용자는 로그인 상태여야 한다.
-  ii. 메시지를 받을 대상을 정해야 한다.
-- **Trigger**
-  사용자가 메시지 보내기 기능을 클릭한다.
-- **Success Post Condition**
-  메시지가 전송되고 수신사제에 전달된다.
-- **Failed Post Condition**
-  메시지 전송 실패하면 오류 메시지가 사용자에게 표시된다.
-#### MAIN SUCCESS SCENARIO
-| Step | Action                                               |
-| ---- | --------------------------------------------------------- |
-| S    | 사용자가 다른 사용자와 소통하고자 한다.                     |
-| 1    | 사용자는 메시지 보내기 버튼을 클릭한다.           |
-| 2    | 클라이언트는 메시지 입력 화면을 제공한다.           |
-| 3    | 사용자는 메시지를 입력하고 전송 버튼을 클릭한다.               |
-| 4    | 클라이언트는 서버에 메시지 전송 요청을 보낸다.                |
-| 5    | 서버는 메시지를 저장하고 수신자에게 전달한다.                 |
-| 6    | 클라이언트는 전송 완료 상태를 표시한다.                 |
-#### EXTENSION SCENARIOS
-| Step | Branching Action                                                                |
-| ---- | --------------------------------------------------------- |
-| 3a   | 메시지 내용이 비어 있는 경우 클라이언트는 “메시지를 입력하세요” 메시지를 표시한다.                |
-#### RELATED INFORMATION
-- **Performance**:
-  2초 이내에 완료되어야 한다.
-- **Frequency**:
-  사용자 간 소통이 필요한 경우 수행되며, 높은 수준의 빈도로 사용된다.
-- **Concurrency**:
-  다수의 사용자가 동시에 메시지를 전송하더라도 정상적으로 처리되어야 한다.
-- **Due Date**:
-  2026.03.31
 
 ---
   ## 3. Class diagram
