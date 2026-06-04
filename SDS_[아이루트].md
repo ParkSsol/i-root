@@ -228,19 +228,10 @@ AI 분석 결과를 바탕으로 학생의 약점을 보완하고 개인화된 �
 51. 게시글 상세 조회
 52. 공감 또는 댓글 달기
 
-## 다이렉트 메시지 
-
-53. 채팅방 생성
-54. 채팅방 목록 조회
-55. 채팅방 삭제
-56. 텍스트 메시지 전송
-57. 읽음 처리
-58. 텍스트 메시지 삭제
-
 
 ## NFC 태그
-55. 
-56.
+55. 승하차 알림
+56. 기사 gps 공유
 ---
 ## 회원 관리
 
@@ -1869,7 +1860,155 @@ GPS 위치 갱신 정보는 5초 주기로 반영되는 것을 목표로 한다.
 | 9a   | 클라이언트 렌더링 실패 시 상태 표시를 단순 텍스트 목록 형태로 대체한다.                                       |
 | 12a  | 실시간 재조회 요청이 실패할 경우 이전 상태를 유지하고 다음 주기에 다시 요청한다.                                  |
 
+---
+## NFC 태그
 
+### Use case #34 : NFC 학생 탑승 알림 및 GPS 공유 시작
+#### GENERAL CHARACTERISTICS
+
+Summary
+학생이 셔틀버스에 탑승하여 물리적인 NFC 카드를 태깅하면 시스템이 이를 인식한다. 학부모에게 실시간 탑승 알림을 즉시 발송함과 동시에, 해당 통학 차량 기사의 GPS 데이터 실시간 위치 공유를 활성화하여 추적 가능한 상태로 전환한다.
+Scope
+아이루트
+Level
+User level
+Author
+김우주
+Last Update
+2026.04.01
+Status
+Design
+Primary Actor
+학생 (Student - 물리적 태깅 주체)
+Preconditions
+
+학생은 고유 식별 UID가 매핑된 NFC 카드를 소지해야 한다.
+차량 내 라즈베리파이 단말기가 네트워크에 정상 연결되어 있어야 한다.
+학부모는 푸시 알림(FCM) 수신에 동의한 상태여야 한다.
+
+
+Trigger
+학생이 셔틀버스 차량 내부 리더기에 NFC 카드를 접촉했을 때
+Success Post Condition
+
+단말기 스피커를 통해 랜덤 환영 인삿말 음성(TTS)이 송출된다.
+학부모에게 "자녀가 탑승했습니다" 푸시 알림이 발송된다.
+서버 단에서 해당 차량 기사(Driver)의 GPS 기록에 대한 학부모 조회 권한(sharingStatus)을 'ACTIVE'로 변경한다.
+
+
+Failed Post Condition
+
+단말기 화면에 붉은색 경고 UI와 함께 실패 안내 문구가 출력되며, 재태깅을 유도하는 TTS가 송출된다.
+
+
+
+#### MAIN SUCCESS SCENARIO
+StepActionS학생이 단말기에 NFC 카드를 접촉하면 학부모에게 실시간 탑승 알림이 전송되고, GPS 공유가 활성화된다.1학생이 셔틀버스에 탑승하며 단말기에 NFC 카드를 접촉한다.2단말기(라즈베리파이)가 NFC 카드 UID와 태깅 타임스탬프를 백엔드 서버(Spring Boot)로 전송한다.3서버는 수신된 UID를 검증하여 일치하는 학생 및 보호자(Parent) 정보를 조회한다.4서버는 해당 차량 세션의 위치 공유 플래그를 활성화하여 학부모가 실시간 지도 화면을 볼 수 있도록 권한을 연동한다.5서버는 FCM 서버를 트리거하여 학부모 스마트폰으로 실시간 탑승 푸시 알림을 전송한다.6단말기 화면에 학생의 프로필이 표시되며 내장 스피커로 안내 음성이 출력된다.
+EXTENSION SCENARIOS
+StepBranching Action2a태깅 인식 오류로 UID 인식 실패 시 단말기 화면에 붉은색 경고 UI를 출력하고 재태깅을 유도한다.3a서버에서 UID에 매핑된 학생 정보를 찾을 수 없는 경우 등록되지 않은 카드로 처리하고 단말기에 오류를 표시한다.5aFCM 전송 실패 시 최대 3회 재시도 후 실패 이력을 DB에 저장한다.
+RELATED INFORMATION
+
+Performance: NFC 태그 인식부터 서버 전송 및 학부모 푸시 알림까지의 프로세스는 2초 이내로 수행될 것을 목표로 한다.
+Frequency: 학생이 셔틀버스에 승차하여 NFC 카드를 태깅할 때마다 매번 수행된다.
+Concurrency: 한 대의 셔틀버스 내에서 다수의 학생이 1~2초 간격으로 연속 태깅하더라도 데이터 유실 없이 순차적으로 처리되어야 한다.
+Due Date: 2026.04.01
+
+
+### Use case #35 : NFC 학생 하차 알림 및 GPS 공유 종료
+#### GENERAL CHARACTERISTICS
+
+Summary
+학생이 학원 또는 목적지에 도착하여 셔틀버스에서 내릴 때 NFC 카드를 태깅한다. 학부모에게 하차 푸시 알림을 발송하며, 해당 학생에 대한 기사의 실시간 GPS 위치 공유 권한을 즉시 차단(종료)하여 개인정보 및 운행 보안을 유지한다.
+Scope
+아이루트
+Level
+User level
+Author
+김우주
+Last Update
+2026.04.01
+Status
+Design
+Primary Actor
+학생 (Student)
+Preconditions
+
+학생이 차량에 탑승 중(RideState: BOARDED)인 상태여야 한다.
+
+
+Trigger
+학생이 하차하며 차량 내부 리더기에 NFC 카드를 접촉했을 때
+Success Post Condition
+
+단말기 스피커를 통해 작별 인삿말 음성(TTS)이 송출된다.
+학부모에게 "자녀가 안전하게 하차했습니다" 푸시 알림이 발송된다.
+해당 학부모 계정에서 통학 차량의 실시간 GPS 위치를 조회하는 API 접근 권한을 즉시 비활성화(INACTIVE)한다.
+
+
+Failed Post Condition
+
+단말기 화면에 붉은색 경고 UI와 함께 실패 안내 문구가 출력되며, 재태깅을 유도하는 TTS가 송출된다.
+
+
+
+#### MAIN SUCCESS SCENARIO
+StepActionS학생이 단말기에 NFC 카드를 접촉하면 학부모에게 하차 알림이 전송되고 GPS 공유가 종료된다.1학생이 목적지에 도달하여 하차하며 단말기에 NFC 카드를 접촉한다.2단말기가 NFC UID와 하차 타임스탬프를 백엔드 서버로 전송한다.3서버는 학생의 탑승 상태를 하차(DROPPED)로 갱신한다.4서버는 해당 학부모 계정에 묶인 실시간 위치 추적 API 권한을 즉시 차단한다. (이후 기사의 위치 조회 요청 시 거부 응답 반환)5서버는 FCM 서버를 트리거하여 학부모 스마트폰으로 하차 완료 알림을 전송한다.6단말기 화면에 학생의 프로필이 표시되며 내장 스피커로 작별 안내 음성이 출력된다.
+EXTENSION SCENARIOS
+StepBranching Action2a태깅 인식 오류로 UID 인식 실패 시 단말기 화면에 붉은색 경고 UI를 출력하고 재태깅을 유도한다.3a학생이 탑승 상태가 아닌 경우 하차 처리를 거부하고 단말기에 오류 상태를 표시한다.5aFCM 전송 실패 시 최대 3회 재시도 후 실패 이력을 DB에 저장한다.
+RELATED INFORMATION
+
+Performance: NFC 태그 인식부터 서버 전송 및 학부모 푸시 알림까지의 프로세스는 2초 이내로 수행될 것을 목표로 한다.
+Frequency: 학생이 셔틀버스에서 하차하며 NFC 카드를 태깅할 때마다 매번 수행된다.
+Concurrency: 다수의 학생이 연속 태깅하더라도 데이터 유실 없이 순차적으로 처리되어야 한다.
+Due Date: 2026.04.01
+
+
+### Use case #36 : NFC 기반 학원 출결 자동 처리
+#### GENERAL CHARACTERISTICS
+
+Summary
+학생의 차량 탑승 및 하차 태깅 이벤트를 학원의 중앙 출결 시스템(Attendance)과 다이렉트로 연동하여, 별도의 수동 입력 없이 '등원(출석)' 및 '하원' 상태를 자동으로 기록하고 처리하는 기능이다.
+Scope
+아이루트
+Level
+System level
+Author
+석지윤
+Last Update
+2026.04.01
+Status
+Design
+Primary Actor
+시스템 서버 (System Server), 학생 (Student)
+Preconditions
+
+학원의 당일 수업 스케줄 및 출결 테이블이 DB에 생성되어 있어야 한다.
+
+
+Trigger
+Use Case #34(탑승) 및 #35(하차)의 NFC 태깅 API가 백엔드 서버에 성공적으로 접수되었을 때
+Success Post Condition
+
+학원 출결 데이터베이스의 AttendanceEntity 상태가 업데이트된다.
+등하원 시간에 맞춘 출결 최종 확정 처리가 이루어진다.
+
+
+Failed Post Condition
+
+출결 서비스 처리 실패 시 시스템 로그에 오류를 기록하고 관리자에게 알린다.
+
+
+
+#### MAIN SUCCESS SCENARIO
+StepActionSNFC 태깅 이벤트 수신 후 자동으로 출결이 처리된다.1백엔드 서버는 단말기로부터 수신된 NFC 태깅 데이터의 이벤트 타입(등원행 탑승 / 하원행 하차 등)을 분석한다.2[등원 시] 학원 도착지에 정상 하차하거나 지정 셔틀 탑승이 확인되면, 출결 서비스(AttendanceService)를 호출하여 해당 학생의 당일 출결 상태를 'ATTENDANCE(출석)' 로 자동 전환한다.3[하원 시] 수업 종료 후 귀가 차량 탑승 및 하차가 식별되면, 출결 상태를 'DEPARTURE(하원)' 로 갱신한다.4시스템은 자동 처리된 출결 상태 리포트를 학원 관리자(Administrator) 대시보드 및 학부모 앱의 출결 현황 컴포넌트로 실시간 동기화한다.
+EXTENSION SCENARIOS
+StepBranching Action1a이벤트 타입을 분류할 수 없는 경우 해당 태깅을 미분류 상태로 로깅하고 관리자에게 검토를 요청한다.2a당일 출결 테이블이 존재하지 않는 경우 출결 처리를 건너뛰고 오류를 로그에 기록한다.
+RELATED INFORMATION
+
+Performance: NFC 태깅 이벤트 수신 후 출결 상태 업데이트는 1초 이내에 완료되어야 한다.
+Frequency: Use Case #34, #35 호출 시마다 자동으로 트리거된다.
+Concurrency: 다수의 학생 태깅이 동시에 발생하더라도 각 출결 처리는 독립적으로 처리되어야 한다.
+Due Date: 2026.04.01
 
 
 
@@ -2933,13 +3072,6 @@ GPS 위치 갱신 정보는 5초 주기로 반영되는 것을 목표로 한다.
 | 3    | 동일 이벤트이고 상태 변화가 없으나 5분이 초과하였거나 상태 변화가 감지된 경우에만 송 대상으로 승인한다.                                    |
 | 4    | 계산된 거리가 GPS 오차를 고려한 지정값을 초과하여 일정 거리 이상 이탈함이 감지되면 '이탈'상태로 판단한다.|
 | 5    | 승인된 알림은 FCM을 통해 학부모 유저에 즉시 발송한다.
-
-
-#### EXTENSION SCENARIOS
-| Step | Branching Action                                                                           |
-| ---- | ------------------------------------------------------------------------------------------ |
-| 4a   | 게시판 기능 중 '다이렉트 메시지'는 실시간 상호작용이 필수적인 요소이므로 본 중복 방지 정책을 적용하지 않고 이벤트 발생 시마다 즉시 전송한다.    |
-| 5a   | FCM 서버 연동 실패 시 최대 3회까진 전송을 재시도하며 실패 시 학부모 유저가 앱 접속 시 확인할 수 있도록 실패 이력을 DB에 기록하고 모니터링 UI에 해당 이력을 반영한다.|
 
 
 #### RELATED INFORMATION
@@ -6496,154 +6628,6 @@ classDiagram
 | Method	| assignTagToPost(Long postId, Long tagId)	| ResponseEntity<Void> 	| 게시글에 태그 연결	|
 | Method	| removeTagFromPost(Long postId, Long tagId)	| ResponseEntity<Void>		| 게시글에서 태그 제거   |
 
-### 다이렉트 메시지 
-```mermaid
-classDiagram
-    direction TB
-
-    %%==============================
-    %% ENTITY
-    %%==============================
-    class User {
-        +Long userId
-        +String name
-        +String role
-    }
-
-    class ChatRoom {
-        +Long chatRoomId
-        +String name
-        +Boolean isGroup
-        +Date createdAt
-        +Date updatedAt
-    }
-
-    class Message {
-        +Long messageId
-        +String content
-        +Date sentAt
-        +Date readAt
-        +Boolean isRead
-    }
-
-    class Attachment {
-        +Long attachmentId
-        +String fileUrl
-        +String fileType
-        +Date uploadedAt
-    }
-
-    %% 관계
-    ChatRoom "1" --> "0..*" Message : contains
-    ChatRoom "0..*" --> "0..*" User : participants
-    Message "1" --> "1" User : sender
-    Message "1" --> "1" User : receiver
-    Message "0..*" --> "0..*" Attachment : includes
-
-    %%==============================
-    %% DTO
-    %%==============================
-    class ChatRoomDto {
-        +Long chatRoomId
-        +String name
-        +Boolean isGroup
-        +Date createdAt
-        +Date updatedAt
-        +List<UserDto> participants
-    }
-
-    class MessageDto {
-        +Long messageId
-        +Long chatRoomId
-        +Long senderId
-        +Long receiverId
-        +String content
-        +Boolean isRead
-        +Date sentAt
-        +List<AttachmentDto> attachments
-    }
-
-    class AttachmentDto {
-        +Long attachmentId
-        +Long messageId
-        +String fileUrl
-        +String fileType
-        +Date uploadedAt
-    }
-
-    class UserDto {
-        +Long userId
-        +String name
-        +String role
-    }
-
-    %%==============================
-    %% REPOSITORY
-    %%==============================
-    class ChatRoomRepository {
-        <<interface>>
-        +findByUsersContaining(User user)
-        +findByName(String name)
-    }
-
-    class MessageRepository {
-        <<interface>>
-        +findByChatRoom(ChatRoom room)
-        +findBySender(User sender)
-        +findByReceiver(User receiver)
-    }
-
-    %%==============================
-    %% SERVICE
-    %%==============================
-    class ChatRoomService {
-        +createChatRoom(List<Long> userIds, ChatRoomDto dto)
-        +getChatRoomsByUser(Long userId)
-        +getChatRoomDetail(Long roomId)
-        +deleteChatRoom(Long roomId)
-    }
-
-    class MessageService {
-        +sendMessage(Long roomId, Long senderId, MessageDto dto)
-        +getMessagesByRoom(Long roomId)
-        +markAsRead(Long messageId)
-        +deleteMessage(Long messageId)
-    }
-
-    %% 연결 (Service → Repository)
-    ChatRoomService --> ChatRoomRepository
-    MessageService --> MessageRepository
-    MessageService --> ChatRoomRepository
-
-    %%==============================
-    %% CONTROLLER
-    %%==============================
-    class ChatRoomController {
-        +createChatRoom(List<Long> userIds, ChatRoomDto dto)
-        +getChatRoomsByUser(Long userId)
-        +getChatRoomDetail(Long roomId)
-        +deleteChatRoom(Long roomId)
-    }
-
-    class MessageController {
-        +sendMessage(Long roomId, Long senderId, MessageDto dto)
-        +getChatMessages(Long roomId)
-        +markAsRead(Long messageId)
-        +deleteMessage(Long messageId)
-    }
-
-    %% 연결 (Controller → Service)
-    ChatRoomController --> ChatRoomService
-    MessageController --> MessageService
-
-    %%==============================
-    %% CROSS ENTITY-DATA RELATIONS
-    %%==============================
-    MessageDto --> ChatRoomDto : references
-    MessageDto --> AttachmentDto : includes
-    ChatRoomDto --> UserDto : participants
-
-```
 
 #### Entity Class
 
